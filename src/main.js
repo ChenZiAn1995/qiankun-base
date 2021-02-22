@@ -35,6 +35,8 @@ Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
 
+import './qiankun.js'
+
 new Vue({
   el: '#app',
   router,

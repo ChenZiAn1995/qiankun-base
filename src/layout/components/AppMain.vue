@@ -1,7 +1,9 @@
 <template>
   <section class="app-main">
     <transition name="fade-transform" mode="out-in">
-      <router-view :key="key" />
+      <div id="appContainer">
+        <router-view :key="key" />
+      </div>
     </transition>
   </section>
 </template>
@@ -36,5 +38,8 @@ export default {
   .fixed-header {
     padding-right: 15px;
   }
+}
+#appContainer {
+  padding: 20px;
 }
 </style>

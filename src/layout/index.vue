@@ -14,7 +14,7 @@
 <script>
 import { Navbar, Sidebar, AppMain } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
-
+import { start } from 'qiankun';
 export default {
   name: 'Layout',
   components: {
@@ -40,6 +40,12 @@ export default {
         withoutAnimation: this.sidebar.withoutAnimation,
         mobile: this.device === 'mobile'
       }
+    }
+  },
+  mounted() {
+    if (!window.qiankunStarted) {
+      window.qiankunStarted = true;
+      start();
     }
   },
   methods: {
