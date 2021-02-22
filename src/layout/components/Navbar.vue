@@ -71,6 +71,7 @@
     }
 
     .breadcrumb-container {
+      padding-left: 30px;
       float: left;
     }
 

@@ -24,8 +24,8 @@
     },
     data() {
       return {
-        title: 'Vue Admin Template',
-        logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+        title: '',
+        logo: 'https://wanshunfu-1301582899.cos.ap-guangzhou.myqcloud.com//11111/a174c3a7188e8bee423c2450799cc8fclogo.png'
       }
     }
   }
@@ -46,7 +46,7 @@
     width: 100%;
     height: 50px;
     line-height: 50px;
-    background: #2b2f3a;
+    //background: #2b2f3a;
     text-align: center;
     overflow: hidden;
 

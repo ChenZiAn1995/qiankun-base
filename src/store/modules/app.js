@@ -1,11 +1,32 @@
 import Cookies from 'js-cookie'
+import Layout from '@/layout/index'
 
 const state = {
   sidebar: {
     opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
     withoutAnimation: false
   },
-  device: 'desktop'
+  device: 'desktop',
+  sidebarList: [
+    {
+      title: '看板',
+      children: [
+        {
+          title: '系统',
+          path: 'dashboard'
+        }
+      ]
+    },
+    {
+      title: '数据',
+      children: [
+        {
+          path: '/app/dc',
+          title: '数据看板'
+        }
+      ]
+    }
+  ]
 }
 
 const mutations = {
