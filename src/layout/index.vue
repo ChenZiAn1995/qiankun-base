@@ -1,8 +1,8 @@
 <template>
   <div :class="classObj" class="app-wrapper">
     <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <sidebar class="sidebar-container" />
-    <div class="main-container">
+    <sidebar :showSub="hasSubSidebar" class="sidebar-container" :class="{ 'sidebar-container-sub-sidebar': hasSubSidebar }" />
+    <div class="main-container" :class="{ 'main-container-sub-sidebar': hasSubSidebar }">
       <div :class="{ 'fixed-header': fixedHeader }">
         <navbar />
       </div>
@@ -40,6 +40,9 @@
           withoutAnimation: this.sidebar.withoutAnimation,
           mobile: this.device === 'mobile'
         }
+      },
+      hasSubSidebar() {
+        return this.$route.name !== 'Dashboard'
       }
     },
     mounted() {
@@ -95,5 +98,12 @@
 
   .mobile .fixed-header {
     width: 100%;
+  }
+
+  .main-container-sub-sidebar {
+    margin-left: calc(#{$sideBarWidth + $subSideBarWidth}) !important;
+  }
+  .sidebar-container-sub-sidebar {
+    width: calc(#{$sideBarWidth + $subSideBarWidth}) !important;
   }
 </style>
