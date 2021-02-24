@@ -2,42 +2,43 @@
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <div class="logo"><img src="" alt="" /></div>
+        <div class="title">万顺福生鲜农特产电商平台</div>
       </div>
 
-      <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input ref="username" v-model="loginForm.username" placeholder="Username" name="username" type="text" tabindex="1" auto-complete="on" />
-      </el-form-item>
+      <el-tabs v-model="loginType" @tab-click="tabsHandleClick">
+        <el-tab-pane label="账号密码登录" name="1">
+          <el-form-item prop="username">
+            <span class="svg-container">
+              <svg-icon icon-class="user" />
+            </span>
+            <el-input ref="username" v-model="loginForm.username" placeholder="Username" name="username" type="text" tabindex="1" auto-complete="on" />
+          </el-form-item>
 
-      <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
-        <el-input
-          :key="passwordType"
-          ref="password"
-          v-model="loginForm.password"
-          :type="passwordType"
-          placeholder="Password"
-          name="password"
-          tabindex="2"
-          auto-complete="on"
-          @keyup.enter.native="handleLogin"
-        />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-        </span>
-      </el-form-item>
+          <el-form-item prop="password">
+            <span class="svg-container">
+              <svg-icon icon-class="password" />
+            </span>
+            <el-input
+              :key="passwordType"
+              ref="password"
+              v-model="loginForm.password"
+              :type="passwordType"
+              placeholder="Password"
+              name="password"
+              tabindex="2"
+              auto-complete="on"
+              @keyup.enter.native="handleLogin"
+            />
+            <span class="show-pwd" @click="showPwd">
+              <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+            </span>
+          </el-form-item>
+        </el-tab-pane>
+        <el-tab-pane label="手机号登录" name="2"></el-tab-pane>
+      </el-tabs>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span>password: any</span>
-      </div>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ `登 录` }}</el-button>
     </el-form>
   </div>
 </template>
@@ -64,7 +65,7 @@
       return {
         loginForm: {
           username: 'admin',
-          password: '111111'
+          password: '20200428wsf'
         },
         loginRules: {
           username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -72,7 +73,8 @@
         },
         loading: false,
         passwordType: 'password',
-        redirect: undefined
+        redirect: undefined,
+        loginType: '1'
       }
     },
     watch: {
@@ -112,7 +114,9 @@
             return false
           }
         })
-      }
+      },
+      // 标签栏切换事件 Todo 清空输入框
+      tabsHandleClick(e) {}
     }
   }
 </script>
@@ -122,12 +126,11 @@
   /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
   $bg: #283443;
-  $light_gray: #fff;
-  $cursor: #fff;
+  $light_gray: rgba(0, 0, 0, 0.43);
 
-  @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
+  @supports (-webkit-mask: none) and (not (cater-color: $light_gray)) {
     .login-container .el-input input {
-      color: $cursor;
+      color: $light_gray;
     }
   }
 
@@ -144,35 +147,39 @@
         -webkit-appearance: none;
         border-radius: 0px;
         padding: 12px 5px 12px 15px;
-        color: $light_gray;
+        //color: $light_gray;
         height: 47px;
-        caret-color: $cursor;
+        //caret-color: $cursor;
 
         &:-webkit-autofill {
-          box-shadow: 0 0 0px 1000px $bg inset !important;
-          -webkit-text-fill-color: $cursor !important;
+          //box-shadow: 0 0 0px 1000px $bg inset !important;
+          //-webkit-text-fill-color: $cursor !important;
         }
       }
     }
 
     .el-form-item {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(0, 0, 0, 0.1);
+      border: 1px solid #eee;
+      background: #fff;
       border-radius: 5px;
-      color: #454545;
+      color: $light_gray;
     }
   }
 </style>
 
 <style lang="scss" scoped>
   $bg: #2d3a4b;
-  $dark_gray: #889aa4;
-  $light_gray: #eee;
+  $bgImg: url('https://wanshunfu-1301582899.cos.ap-guangzhou.myqcloud.com//uat/ad83c95ff27cba458122bd9aff3b312a.jpg');
+  $dark_gray: rgba(0, 0, 0, 0.25);
+  $light_gray: rgba(0, 0, 0, 0.43);
 
   .login-container {
-    min-height: 100%;
+    min-height: 100vh;
     width: 100%;
-    background-color: $bg;
+    background-image: $bgImg;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
     overflow: hidden;
 
     .login-form {
@@ -182,18 +189,6 @@
       padding: 160px 35px 0;
       margin: 0 auto;
       overflow: hidden;
-    }
-
-    .tips {
-      font-size: 14px;
-      color: #fff;
-      margin-bottom: 10px;
-
-      span {
-        &:first-of-type {
-          margin-right: 16px;
-        }
-      }
     }
 
     .svg-container {
@@ -208,7 +203,7 @@
       position: relative;
 
       .title {
-        font-size: 26px;
+        font-size: 16px;
         color: $light_gray;
         margin: 0px auto 40px auto;
         text-align: center;

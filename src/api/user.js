@@ -1,18 +1,25 @@
 import request from '@/utils/request'
-
+import AES from '@/utils/AES'
+/**
+ * 用户登录
+ * @param data
+ */
 export function login(data) {
+  data = AES.encrypt(data)
   return request({
-    url: '/vue-admin-template/user/login',
+    url: '/login',
     method: 'post',
     data
   })
 }
 
-export function getInfo(token) {
+/**
+ * 获得用户信息
+ */
+export function getInfo() {
   return request({
-    url: '/vue-admin-template/user/info',
-    method: 'get',
-    params: { token }
+    url: '/managerinfo',
+    method: 'get'
   })
 }
 
