@@ -5,7 +5,7 @@
       <el-scrollbar style="height: 100%;" wrap-class="scrollbar-wrapper" :noresize="false" :view-style="{ height: '100%' }">
         <div class="module-menu">
           <template v-for="route in sidebarList">
-            <div class="module-menu__item" :key="route.path">
+            <div class="module-menu__item" :key="route.path" @click="goTo(route)">
               {{ route.title }}
             </div>
           </template>
@@ -28,8 +28,8 @@
         <!--      </el-menu>-->
       </el-scrollbar>
     </div>
-    <div class="sub-sidebar">
-      <div class="sub-menu-title">数据中心</div>
+    <div class="sub-sidebar" v-show="showSub">
+      <div class="sub-menu-title">系统功能</div>
       <el-scrollbar style="height: 100%;" wrap-class="scrollbar-wrapper" :noresize="false" :view-style="{ height: '100%' }">
         <div class="sub-menu">
           <template v-for="route in sidebarList">
@@ -98,6 +98,12 @@
     },
     data() {
       return {}
+    },
+    methods: {
+      goTo(route) {
+        console.log(route)
+        this.$router.push(route.path)
+      }
     }
   }
 </script>

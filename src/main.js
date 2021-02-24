@@ -38,8 +38,8 @@ Vue.config.productionTip = false
 import './qiankun.js'
 
 new Vue({
-  el: '#app',
+  el: '#baseApp',
   router,
   store,
-  render: h => h(App)
+  render: (h) => h(App)
 })

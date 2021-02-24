@@ -10,6 +10,17 @@ const state = {
   sidebarList: [
     {
       title: '看板',
+      path: '/dashboard',
+      children: [
+        {
+          title: '系统',
+          path: 'dashboard'
+        }
+      ]
+    },
+    {
+      title: '旧系统',
+      path: '/old/',
       children: [
         {
           title: '系统',
@@ -19,6 +30,7 @@ const state = {
     },
     {
       title: '数据',
+      path: '/app/dc',
       children: [
         {
           path: '/app/dc',

@@ -57,10 +57,16 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/app/dc',
+    path: '/app/*',
     component: Layout,
     name: 'datacenter',
     meta: { title: '数据中心', icon: 'dashboard' }
+  },
+  {
+    path: '/old/*',
+    component: Layout,
+    name: 'datacenter',
+    meta: { title: '旧系统', icon: 'dashboard' }
   },
 
   // 404 page must be placed at the end !!!
