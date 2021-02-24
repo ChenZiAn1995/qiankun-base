@@ -6,6 +6,7 @@ import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/token' // get token from cookie
 import { getMenus } from '@/api/user'
 import { filterAsyncRouter } from './store/modules/permission'
+import { filterMenus } from '@/store/modules/app'
 
 NProgress.configure({
   showSpinner: false
@@ -18,7 +19,7 @@ const whiteList = ['/old/login', '/login']
 router.beforeEach(async (to, from, next) => {
   // // 加载基本信息
   try {
-    await store.dispatch('baseinfoset/getBaseInfoSet')
+    await store.dispatch('app/getBaseInfoSet')
   } catch (err) {
     console.log(err)
   }
@@ -34,7 +35,7 @@ router.beforeEach(async (to, from, next) => {
     document.title = store.getters.baseinfoset.siteName
   }
   // 设置标签图片
-  // document.getElementById('page_icon').href = store.getters.baseinfoset.labelLog
+  // document.getElementById('page_icon').href = store.getters.menus.labelLog
 
   if (getToken()) {
     // 已登录且要跳转的页面是登录页
@@ -124,6 +125,9 @@ export const loadMenus = (next, to) => {
         replace: true
       }) // hack方法 确保addRoutes已完成
     })
+    const menus = filterMenus(asyncRouter)
+    store.commit('app/SET_MENUS', menus)
+    console.log('menus: ', menus)
   })
 }
 
