@@ -30,7 +30,7 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
-export const constantRoutes = [
+export const constantRouterMap = [
   {
     path: '/login',
     component: () => import('@/views/login/index'),
@@ -77,7 +77,7 @@ const createRouter = () =>
   new Router({
     mode: 'history', // require service support
     scrollBehavior: () => ({ y: 0 }),
-    routes: constantRoutes
+    routes: constantRouterMap
   })
 
 const router = createRouter()

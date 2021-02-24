@@ -58,19 +58,10 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token)
+      getInfo()
         .then((response) => {
-          const { data } = response
-
-          if (!data) {
-            return reject('Verification failed, please Login again.')
-          }
-
-          const { name, avatar } = data
-
-          commit('SET_NAME', name)
-          commit('SET_AVATAR', avatar)
-          resolve(data)
+          commit('SET_NAME', response.username)
+          resolve(response)
         })
         .catch((error) => {
           reject(error)

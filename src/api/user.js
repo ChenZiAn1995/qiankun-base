@@ -23,6 +23,16 @@ export function getInfo() {
   })
 }
 
+/**
+ * 获得用户的菜单
+ */
+export function getMenus() {
+  return request({
+    url: '/managermenus',
+    method: 'get'
+  })
+}
+
 export function logout() {
   return request({
     url: '/vue-admin-template/user/logout',
