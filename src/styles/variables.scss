@@ -8,7 +8,11 @@ $menuBg: #444444;
 $menuHoverBg: #666;
 
 $subMenuBg:#1f2d3d;
-$subMenuHover:#001528;
+$subMenuHoverBg:#001528;
+$subMenuActiveBg: #ebedf0;
+$subMenuHoverColor: #155bd4;
+$subMenuColor: #323233;
+
 
 $sideBarWidth: 92px;
 $subSideBarWidth: 132px;
@@ -22,6 +26,9 @@ $subSideBarWidth: 132px;
   menuBg: $menuBg;
   menuHoverBg: $menuHoverBg;
   subMenuBg: $subMenuBg;
-  subMenuHover: $subMenuHover;
+  subMenuHoverBg: $subMenuHoverBg;
+  subMenuActiveBg:$subMenuActiveBg;
+  subMenuColor:$subMenuColor;
+  subMenuHoverColor: $subMenuHoverColor;
   sideBarWidth: $sideBarWidth;
 }

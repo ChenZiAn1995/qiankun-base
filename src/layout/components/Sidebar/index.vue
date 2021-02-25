@@ -1,57 +1,57 @@
+<script src="../../../router/index.js"></script>
 <template>
   <div @mouseleave="focusMenu()">
+    <!--  模块导航  -->
     <div class="main-sidebar" :class="{ 'has-logo': showLogo }">
       <logo v-if="showLogo" :collapse="isCollapse" />
       <el-scrollbar style="height: 100%;" wrap-class="scrollbar-wrapper" :noresize="false" :view-style="{ height: '100%' }">
         <div class="module-menu">
           <template v-for="(module, index) in menus">
-            <div class="module-menu__item" :key="module.path" @click="activeMenus(module, index)" @mouseenter="hoverMenu(index)">
+            <div
+              class="module-menu__item"
+              :class="{ 'module-menu__acitve': activeMenusIdx == index }"
+              :key="module.path"
+              v-if="!module.hidden"
+              @click="activeMenus(module, index)"
+              @mouseenter="hoverMenu(index)"
+            >
               {{ module.title }}
             </div>
           </template>
         </div>
-        <!--      <el-menu-->
-        <!--        :default-active="activeMenu"-->
-        <!--        :collapse="isCollapse"-->
-        <!--        :background-color="variables.menuBg"-->
-        <!--        :text-color="variables.menuText"-->
-        <!--        :unique-opened="false"-->
-        <!--        :active-text-color="variables.menuActiveText"-->
-        <!--        :collapse-transition="false"-->
-        <!--        mode="vertical"-->
-        <!--      >-->
-        <!--        <template v-for="route in sidebarList">-->
-        <!--          <el-menu-item :key="route.path" class="menu-item">-->
-        <!--            <div :style="{ 'text-align': 'center' }" slot="title">{{ route.title }}</div>-->
-        <!--          </el-menu-item>-->
-        <!--        </template>-->
-        <!--      </el-menu>-->
       </el-scrollbar>
     </div>
-    <div class="sub-sidebar" v-show="showSub || activeSubmenus.length > 0 || activeMenusIdx">
-      <div class="sub-menu-title">{{ loadSubMenus.title }}</div>
+    <!--  菜单导航  -->
+    <div class="sub-sidebar" v-show="showSub || hoverMenusIdx">
+      <div class="sub-sidebar-title">{{ loadSubMenus.title }}</div>
       <el-scrollbar style="height: 100%;" wrap-class="scrollbar-wrapper" :noresize="false" :view-style="{ height: '100%' }">
-        <!--        <div class="sub-menu">-->
-        <!--          <template v-for="subMenu in activeSubmenus">-->
-        <!--            <div class="sub-menu__item" :key="subMenu.path">-->
-        <!--              {{ subMenu.title }}-->
-        <!--            </div>-->
-        <!--          </template>-->
-        <!--        </div>-->
-        <el-menu :default-active="activeMenu" :collapse="isCollapse" :unique-opened="false" :collapse-transition="false" mode="vertical">
+        <div class="sub-menus-container">
           <template v-for="(subMenu, subMenuIdx) in loadSubMenus.children">
-            <el-submenu :index="`${subMenuIdx}`">
-              <template slot="title">
-                {{ subMenu.title }}
+            <div class="sub-menu-group">
+              <template v-if="subMenu.children && subMenu.children.length > 1">
+                <div :key="subMenuIdx" class="sub-menu-group__title">{{ subMenu.title }}</div>
+                <div class="sub-menus">
+                  <template v-for="subMenuItem in subMenu.children">
+                    <div class="sub-menu__item sub-menu__hover">{{ subMenuItem.title }}</div>
+                  </template>
+                </div>
               </template>
-              <template v-for="subMenuItem in subMenu.children">
-                <el-menu-item :key="subMenuItem.path" class="menu-item">
-                  <div :style="{ 'text-align': 'center' }" slot="title">{{ subMenuItem.title }}</div>
-                </el-menu-item>
+              <template v-else>
+                <div
+                  v-if="subMenu.children && subMenu.children > 0"
+                  :key="subMenuIdx"
+                  class="sub-menu-group__title sub-menu__hover"
+                  :class="{ 'sub-menu__active': activeMenu == subMenu.children[0].path }"
+                >
+                  {{ subMenu.children[0].title }}
+                </div>
+                <div v-else :key="subMenuIdx" class="sub-menu-group__title sub-menu__hover" :class="{ 'sub-menu__active': activeMenu == subMenu.path }">
+                  {{ subMenu.title }}
+                </div>
               </template>
-            </el-submenu>
+            </div>
           </template>
-        </el-menu>
+        </div>
       </el-scrollbar>
     </div>
   </div>
@@ -94,26 +94,40 @@
         return !this.sidebar.opened
       },
       loadSubMenus() {
-        return this.activeMenusIdx !== null ? this.menus[this.activeMenusIdx] : this.activeSubmenus
+        return this.hoverMenusIdx !== null ? this.menus[this.hoverMenusIdx] : this.activeSubmenus
+      }
+    },
+    watch: {
+      '$route.meta': {
+        handler(n, o) {
+          if (n.moduleUrl) {
+            let activeMenusIdx = this.menus.findIndex((el) => {
+              return el.moduleUrl == n.moduleUrl
+            })
+            this.activeMenusIdx = activeMenusIdx
+            this.activeMenus(this.menus[activeMenusIdx])
+          }
+        },
+        immediate: true
       }
     },
     data() {
       return {
         activeSubmenus: [],
+        hoverMenusIdx: null,
         activeMenusIdx: null
       }
     },
     methods: {
       activeMenus(menu, menuIdx) {
         this.activeSubmenus = menu ? menu : []
-        this.activeMenusIdx = menuIdx
-        this.$router.push(menu.children[0].path)
+        // this.$router.push('/client/old' + menu.children[0].path)
       },
       hoverMenu(idx) {
-        this.activeMenusIdx = idx
+        this.hoverMenusIdx = idx
       },
       focusMenu() {
-        this.activeMenusIdx = null
+        this.hoverMenusIdx = null
       }
     }
   }
@@ -139,6 +153,14 @@
           background-color: $menuHoverBg;
         }
       }
+      .module-menu__acitve {
+        background-color: #fff;
+        color: #333;
+        &:hover {
+          background-color: #fff;
+          color: #333;
+        }
+      }
     }
   }
   .sub-sidebar {
@@ -150,16 +172,53 @@
     height: 100%;
     z-index: 1001;
     overflow: hidden;
-    background-color: skyblue;
-    .sub-menu-title {
+    background-color: #fff;
+    .sub-sidebar-title {
       height: 50px;
+      padding-left: 20px;
       line-height: 50px;
-      text-align: center;
       font-size: 14px;
+      font-weight: bold;
+      border: 1px solid #ebedf0;
+      color: #323233;
     }
-    .sub-menu {
-      font-size: 12px;
-      padding: 12px;
+    .sub-menus-container {
+      font-size: 14px;
+      padding: 12px 12px 27px;
+
+      box-sizing: border-box;
+      user-select: none;
+      .sub-menu-group {
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ccc;
+        color: $subMenuColor;
+        .sub-menu-group__title {
+          height: 40px;
+          line-height: 40px;
+          padding-left: 6px;
+        }
+        .sub-menus {
+          .sub-menu__item {
+            height: 40px;
+            line-height: 32px;
+            box-sizing: border-box;
+            padding: 4px 0 4px 20px;
+            overflow: hidden;
+            border-radius: 6px;
+          }
+        }
+      }
+    }
+    .sub-menu__hover {
+      cursor: pointer;
+      &:hover {
+        color: $subMenuHoverColor;
+      }
+    }
+    .sub-menu__active {
+      border-radius: 2px;
+      background-color: $subMenuActiveBg;
     }
   }
 </style>

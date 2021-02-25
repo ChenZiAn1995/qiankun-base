@@ -91,6 +91,9 @@ export const loadMenus = (next, to) => {
         path: '/',
         redirect: index.path,
         component: Layout,
+        meta: {
+          title: '看板'
+        },
         children: [
           {
             path: 'dashboard',
@@ -116,6 +119,22 @@ export const loadMenus = (next, to) => {
       path: '*',
       redirect: '/404',
       hidden: true
+    })
+    asyncRouter.push({
+      path: '',
+      meta: {
+        title: '数据中心'
+      },
+      moduleUrl: '/client/dc',
+      children: [
+        {
+          path: '/client/dc',
+          meta: {
+            title: '数据中心',
+            moduleUrl: '/client/dc'
+          }
+        }
+      ]
     })
     store.dispatch('permission/generateRoutes', asyncRouter).then(() => {
       // 存储路由

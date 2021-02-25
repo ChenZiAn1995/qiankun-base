@@ -20,7 +20,7 @@ const permission = {
   }
 }
 
-export const filterAsyncRouter = (routers) => {
+export const filterAsyncRouter = (routers, upperRouters) => {
   // 遍历后台传来的路由字符串，转换为组件对象
   const accessedRouters = routers.filter((router) => {
     if (router.component) {
@@ -32,9 +32,13 @@ export const filterAsyncRouter = (routers) => {
         router.component = loadView(component)
       }
     }
+    /* 加入模块值 */
+    if (upperRouters) {
+      router.meta.moduleUrl = '/alient/dc'
+    }
     /* 递归处理 */
     if (router.children && router.children.length) {
-      router.children = filterAsyncRouter(router.children)
+      router.children = filterAsyncRouter(router.children, router)
     }
     return true
   })

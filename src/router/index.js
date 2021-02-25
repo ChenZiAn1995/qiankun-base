@@ -57,15 +57,16 @@ export const constantRouterMap = [
     ]
   },
   {
-    path: '/app/*',
+    path: '/client/*',
     component: Layout,
     name: 'datacenter',
-    meta: { title: '数据中心', icon: 'dashboard' }
+    meta: { title: '数据中心', icon: 'dashboard', moduleUrl: '/client/dc' }
   },
   {
-    path: '/old/*',
+    path: '/client/old/*',
     component: Layout,
     name: 'datacenter',
+    moduleUrl: '/client/old',
     meta: { title: '旧系统', icon: 'dashboard' }
   },
 

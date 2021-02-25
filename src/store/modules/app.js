@@ -61,16 +61,21 @@ export default {
   actions
 }
 
-export const filterMenus = (routers) => {
+export const filterMenus = (routers, mergeRouters) => {
   // 遍历后台传来的路由字符串，转换为组件对象
-  const accessedRouters = routers.map((router) => {
+  const accessedRouters = routers.map((router, index) => {
     let menus = {
       title: (router.meta && router.meta.title) || '未知',
-      path: router.path
+      path: mergeRouters ? (mergeRouters += `/${router.path}`) : router.path,
+      hidden: router.hidden ? router.hidden : false,
+      moduleUrl: router.moduleUrl
+    }
+    if (!mergeRouters) {
+      menus.activeMoudleIdx = index
     }
     /* 递归处理 */
     if (router.children && router.children.length) {
-      menus.children = filterMenus(router.children)
+      menus.children = filterMenus(router.children, menus.path)
     }
     return menus
   })
