@@ -70,9 +70,6 @@ export const filterMenus = (routers, mergeRouters) => {
       hidden: router.hidden ? router.hidden : false,
       moduleUrl: router.moduleUrl
     }
-    if (!mergeRouters) {
-      menus.activeMoudleIdx = index
-    }
     /* 递归处理 */
     if (router.children && router.children.length) {
       menus.children = filterMenus(router.children, menus.path)

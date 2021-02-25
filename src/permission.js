@@ -91,6 +91,7 @@ export const loadMenus = (next, to) => {
         path: '/',
         redirect: index.path,
         component: Layout,
+        moduleUrl: '/dashboard',
         meta: {
           title: '看板'
         },
@@ -100,6 +101,7 @@ export const loadMenus = (next, to) => {
             name: 'dashboard',
             component: index.component,
             meta: {
+              moduleUrl: '/dashboard',
               title: index.meta.title,
               icon: index.meta.icon,
               affix: true
@@ -128,11 +130,51 @@ export const loadMenus = (next, to) => {
       moduleUrl: '/client/dc',
       children: [
         {
+          path: '',
+          meta: {
+            title: '数据中心',
+            moduleUrl: '/client/dc'
+          },
+          children: [
+            {
+              path: '/client/dc',
+              meta: {
+                title: '数据中心',
+                moduleUrl: '/client/dc'
+              }
+            },
+            {
+              path: '/client/dc',
+              meta: {
+                title: '数据中心',
+                moduleUrl: '/client/dc'
+              }
+            }
+          ]
+        },
+        {
+          path: '',
+          meta: {
+            title: '数据中心',
+            moduleUrl: '/client/dc'
+          },
+          children: [
+            {
+              path: '/client/dc',
+              meta: {
+                title: '数据中心',
+                moduleUrl: '/client/dc'
+              }
+            }
+          ]
+        },
+        {
           path: '/client/dc',
           meta: {
             title: '数据中心',
             moduleUrl: '/client/dc'
-          }
+          },
+          children: []
         }
       ]
     })
@@ -154,7 +196,7 @@ export const loadMenus = (next, to) => {
 function hasIndex(routes) {
   if (routes && routes.length > 0) {
     for (let i = 0; i < routes.length; i++) {
-      if (routes[i].path == '/dashboard') {
+      if (routes[i].path == '/client/old/dashboard') {
         return routes[i]
       }
     }

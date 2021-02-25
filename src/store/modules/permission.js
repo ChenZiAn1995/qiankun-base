@@ -35,6 +35,8 @@ export const filterAsyncRouter = (routers, upperRouters) => {
     /* 加入模块值 */
     if (upperRouters) {
       router.meta.moduleUrl = '/alient/dc'
+    } else {
+      router.path = '/client/old' + router.path
     }
     /* 递归处理 */
     if (router.children && router.children.length) {

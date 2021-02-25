@@ -12,7 +12,6 @@
               :class="{ 'module-menu__acitve': activeMenusIdx == index }"
               :key="module.path"
               v-if="!module.hidden"
-              @click="activeMenus(module, index)"
               @mouseenter="hoverMenu(index)"
             >
               {{ module.title }}
@@ -32,21 +31,20 @@
                 <div :key="subMenuIdx" class="sub-menu-group__title">{{ subMenu.title }}</div>
                 <div class="sub-menus">
                   <template v-for="subMenuItem in subMenu.children">
-                    <div class="sub-menu__item sub-menu__hover">{{ subMenuItem.title }}</div>
+                    <div class="sub-menu-item " @click="$router.push(subMenuItem.path)">
+                      <div class="sub-menu-item__title sub-menu__hover" :class="{ 'sub-menu__active': activeMenu == subMenuItem.path }">
+                        {{ subMenuItem.title }}
+                      </div>
+                    </div>
                   </template>
                 </div>
               </template>
               <template v-else>
-                <div
-                  v-if="subMenu.children && subMenu.children > 0"
-                  :key="subMenuIdx"
-                  class="sub-menu-group__title sub-menu__hover"
-                  :class="{ 'sub-menu__active': activeMenu == subMenu.children[0].path }"
-                >
-                  {{ subMenu.children[0].title }}
+                <div v-if="subMenu.children" :key="subMenuIdx" class="sub-menu-group__title sub-menu__hover" @click="$router.push(subMenu.children[0].path)">
+                  <div style="padding-left: 6px;" :class="{ 'sub-menu__active': activeMenu == subMenu.children[0].path }">{{ subMenu.children[0].title }}</div>
                 </div>
-                <div v-else :key="subMenuIdx" class="sub-menu-group__title sub-menu__hover" :class="{ 'sub-menu__active': activeMenu == subMenu.path }">
-                  {{ subMenu.title }}
+                <div v-else :key="subMenuIdx" class="sub-menu-group__title sub-menu__hover" @click="$router.push(subMenu.path)">
+                  <div style="padding-left: 6px;" :class="{ 'sub-menu__active': activeMenu == subMenu.path }">{{ subMenu.title }}</div>
                 </div>
               </template>
             </div>
@@ -195,17 +193,21 @@
         color: $subMenuColor;
         .sub-menu-group__title {
           height: 40px;
-          line-height: 40px;
-          padding-left: 6px;
+          line-height: 32px;
+          padding: 5px 0;
+          box-sizing: border-box;
         }
         .sub-menus {
-          .sub-menu__item {
+          .sub-menu-item {
             height: 40px;
             line-height: 32px;
             box-sizing: border-box;
-            padding: 4px 0 4px 20px;
+            padding: 5px 0;
             overflow: hidden;
             border-radius: 6px;
+          }
+          .sub-menu-item__title {
+            padding-left: 20px;
           }
         }
       }
