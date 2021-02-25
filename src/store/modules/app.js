@@ -10,39 +10,7 @@ const state = {
   },
   device: 'desktop',
   baseinfoset: false,
-  menus: undefined,
-  sidebarList: [
-    {
-      title: '看板',
-      path: '/dashboard',
-      children: [
-        {
-          title: '系统',
-          path: 'dashboard'
-        }
-      ]
-    },
-    {
-      title: '旧系统',
-      path: '/old/',
-      children: [
-        {
-          title: '系统',
-          path: 'dashboard'
-        }
-      ]
-    },
-    {
-      title: '数据',
-      path: '/app/dc',
-      children: [
-        {
-          path: '/app/dc',
-          title: '数据看板'
-        }
-      ]
-    }
-  ]
+  menus: undefined
 }
 
 const mutations = {
@@ -93,16 +61,16 @@ export default {
   actions
 }
 
-export const filterMenus = (routers, mergeRouters) => {
+export const filterMenus = (routers) => {
   // 遍历后台传来的路由字符串，转换为组件对象
   const accessedRouters = routers.map((router) => {
     let menus = {
-      title: router.name || '未知',
-      path: mergeRouters ? (mergeRouters += `/${router.path}`) : router.path
+      title: (router.meta && router.meta.title) || '未知',
+      path: router.path
     }
     /* 递归处理 */
     if (router.children && router.children.length) {
-      menus.children = filterMenus(router.children, menus.path)
+      menus.children = filterMenus(router.children)
     }
     return menus
   })
