@@ -193,6 +193,7 @@
       padding: 10px 12px 27px;
       box-sizing: border-box;
       user-select: none;
+      transition: all 1s ease 0s;
       .sub-menu-group {
         padding-bottom: 10px;
         margin-bottom: 10px;

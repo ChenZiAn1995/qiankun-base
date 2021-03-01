@@ -19,13 +19,15 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  @import '~@/styles/variables.scss';
   .base-app-main {
     /*50 = navbar  */
     min-height: calc(100vh - 50px);
     width: 100%;
     position: relative;
     overflow: hidden;
+    min-width: $mainContainerMinWidth;
   }
   .fixed-header + .base-app-main {
     padding-top: 50px;

@@ -16,6 +16,7 @@ $subMenuColor: #323233;
 
 $sideBarWidth: 92px;
 $subSideBarWidth: 132px;
+$mainContainerMinWidth: 1200px;
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
 :export {
@@ -31,4 +32,5 @@ $subSideBarWidth: 132px;
   subMenuColor:$subMenuColor;
   subMenuHoverColor: $subMenuHoverColor;
   sideBarWidth: $sideBarWidth;
+  mainContainerMinWidth:$mainContainerMinWidth
 }
