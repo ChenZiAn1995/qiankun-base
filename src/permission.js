@@ -82,105 +82,105 @@ export const loadMenus = (next, to) => {
   getMenus().then((res) => {
     const asyncRouter = filterAsyncRouter(res)
 
-    // 判断是否有首页
-    const index = hasIndex(asyncRouter)
-    if (index) {
-      asyncRouter.shift()
-      // 第一个路由前面插入首页的页面
-      asyncRouter.unshift({
-        path: '/',
-        redirect: index.path,
-        component: Layout,
-        moduleUrl: '/dashboard',
-        meta: {
-          title: '看板'
-        },
-        children: [
-          {
-            path: 'dashboard',
-            name: 'dashboard',
-            component: index.component,
-            meta: {
-              moduleUrl: '/dashboard',
-              title: index.meta.title,
-              icon: index.meta.icon,
-              affix: true
-            }
-          }
-        ]
-      })
-    } else {
-      // 第一个路由前面插入首页的页面
-      asyncRouter.unshift({
-        path: '/',
-        redirect: getChildPath(asyncRouter[0], '')
-      })
-    }
-    // 404 路由放最后面
-    asyncRouter.push({
-      path: '*',
-      redirect: '/404',
-      hidden: true
-    })
-    asyncRouter.push({
-      path: '',
-      meta: {
-        title: '数据中心'
-      },
-      moduleUrl: '/client/dc',
-      children: [
-        {
-          path: '',
-          meta: {
-            title: '数据中心',
-            moduleUrl: '/client/dc'
-          },
-          children: [
-            {
-              path: '/client/dc',
-              meta: {
-                title: '数据中心',
-                moduleUrl: '/client/dc'
-              }
-            },
-            {
-              path: '/client/dc',
-              meta: {
-                title: '数据中心',
-                moduleUrl: '/client/dc'
-              }
-            }
-          ]
-        },
-        {
-          path: '',
-          meta: {
-            title: '数据中心',
-            moduleUrl: '/client/dc'
-          },
-          children: [
-            {
-              path: '/client/dc',
-              meta: {
-                title: '数据中心',
-                moduleUrl: '/client/dc'
-              }
-            }
-          ]
-        },
-        {
-          path: '/client/dc',
-          meta: {
-            title: '数据中心',
-            moduleUrl: '/client/dc'
-          },
-          children: []
-        }
-      ]
-    })
+    // // 判断是否有首页
+    // const index = hasIndex(asyncRouter)
+    // if (index) {
+    //   asyncRouter.shift()
+    //   // 第一个路由前面插入首页的页面
+    //   asyncRouter.unshift({
+    //     path: '/',
+    //     redirect: index.path,
+    //     component: 'Layout',
+    //     moduleUrl: '/dashboard',
+    //     meta: {
+    //       title: '看板'
+    //     },
+    //     children: [
+    //       {
+    //         path: 'dashboard',
+    //         name: 'dashboard',
+    //         component: index.component,
+    //         meta: {
+    //           moduleUrl: '/dashboard',
+    //           title: index.meta.title,
+    //           icon: index.meta.icon,
+    //           affix: true
+    //         }
+    //       }
+    //     ]
+    //   })
+    // } else {
+    //   // 第一个路由前面插入首页的页面
+    //   asyncRouter.unshift({
+    //     path: '/',
+    //     redirect: getChildPath(asyncRouter[0], '')
+    //   })
+    // }
+    // // 404 路由放最后面
+    // asyncRouter.push({
+    //   path: '*',
+    //   redirect: '/404',
+    //   hidden: true
+    // })
+    // asyncRouter.push({
+    //   path: '',
+    //   meta: {
+    //     title: '数据中心'
+    //   },
+    //   moduleUrl: '/client/dc',
+    //   children: [
+    //     {
+    //       path: '',
+    //       meta: {
+    //         title: '数据中心',
+    //         moduleUrl: '/client/dc'
+    //       },
+    //       children: [
+    //         {
+    //           path: '/client/dc',
+    //           meta: {
+    //             title: '数据中心',
+    //             moduleUrl: '/client/dc'
+    //           }
+    //         },
+    //         {
+    //           path: '/client/dc',
+    //           meta: {
+    //             title: '数据中心',
+    //             moduleUrl: '/client/dc'
+    //           }
+    //         }
+    //       ]
+    //     },
+    //     {
+    //       path: '',
+    //       meta: {
+    //         title: '数据中心',
+    //         moduleUrl: '/client/dc'
+    //       },
+    //       children: [
+    //         {
+    //           path: '/client/dc',
+    //           meta: {
+    //             title: '数据中心',
+    //             moduleUrl: '/client/dc'
+    //           }
+    //         }
+    //       ]
+    //     },
+    //     {
+    //       path: '/client/dc',
+    //       meta: {
+    //         title: '数据中心',
+    //         moduleUrl: '/client/dc'
+    //       },
+    //       children: []
+    //     }
+    //   ]
+    // })
     store.dispatch('permission/generateRoutes', asyncRouter).then(() => {
       // 存储路由
-      router.addRoutes(asyncRouter) // 动态添加可访问路由表
+      // router.addRoutes(asyncRouter) // 动态添加可访问路由表
       next({
         ...to,
         replace: true

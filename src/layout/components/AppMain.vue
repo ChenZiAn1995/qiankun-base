@@ -1,5 +1,5 @@
 <template>
-  <section class="app-main">
+  <section class="base-app-main">
     <transition name="fade-transform" mode="out-in">
       <div id="appContainer">
         <router-view :key="key" />
@@ -20,14 +20,14 @@
 </script>
 
 <style scoped>
-  .app-main {
+  .base-app-main {
     /*50 = navbar  */
     min-height: calc(100vh - 50px);
     width: 100%;
     position: relative;
     overflow: hidden;
   }
-  .fixed-header + .app-main {
+  .fixed-header + .base-app-main {
     padding-top: 50px;
   }
 </style>
@@ -41,5 +41,6 @@
   }
   #appContainer {
     padding: 20px;
+    //background-color: #fff;
   }
 </style>

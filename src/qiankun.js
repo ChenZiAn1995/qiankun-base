@@ -1,5 +1,6 @@
 import { registerMicroApps } from 'qiankun'
 import router from './router'
+import store from './store'
 registerMicroApps([
   {
     name: 'wsfFinance', // app name registered
@@ -7,13 +8,18 @@ registerMicroApps([
     container: '#appContainer',
     activeRule: '/client/dc',
     props: {
-      router
+      router,
+      store
     }
   },
   {
-    name: 'vueApp', // app name registered
+    name: 'wsfPlatform', // app name registered
     entry: '//localhost:8080',
     container: '#appContainer',
-    activeRule: '/client/old'
+    activeRule: '/client/old',
+    props: {
+      router,
+      store
+    }
   }
 ])

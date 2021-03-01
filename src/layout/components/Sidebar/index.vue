@@ -9,7 +9,7 @@
           <template v-for="(module, index) in menus">
             <div
               class="module-menu__item"
-              :class="{ 'module-menu__acitve': activeMenusIdx == index }"
+              :class="{ 'module-menu__acitve': activeMenusIdx === index }"
               :key="module.path"
               v-if="!module.hidden"
               @mouseenter="hoverMenu(index)"
@@ -23,7 +23,12 @@
     <!--  菜单导航  -->
     <div class="sub-sidebar" v-show="showSub || hoverMenusIdx">
       <div class="sub-sidebar-title">{{ loadSubMenus.title }}</div>
-      <el-scrollbar style="height: 100%;" wrap-class="scrollbar-wrapper" :noresize="false" :view-style="{ height: '100%' }">
+      <el-scrollbar
+        style="height: 100%;"
+        wrap-class="scrollbar-wrapper"
+        :noresize="false"
+        :view-style="{ height: '100%', 'border-right': '1px solid #ebedf0' }"
+      >
         <div class="sub-menus-container">
           <template v-for="(subMenu, subMenuIdx) in loadSubMenus.children">
             <div class="sub-menu-group">
@@ -96,13 +101,16 @@
       }
     },
     watch: {
-      '$route.meta': {
+      '$route.path': {
         handler(n, o) {
-          if (n.moduleUrl) {
+          if (n) {
             let activeMenusIdx = this.menus.findIndex((el) => {
-              return el.moduleUrl == n.moduleUrl
+              if (n.search(el.path) != -1) {
+                console.log('el:  selected: ', el)
+              }
+              return n.search(el.path) != -1 && el.path.search('/dashboard') == -1
             })
-            this.activeMenusIdx = activeMenusIdx
+            this.activeMenusIdx = activeMenusIdx >= 0 && activeMenusIdx
             this.activeMenus(this.menus[activeMenusIdx])
           }
         },
@@ -182,8 +190,7 @@
     }
     .sub-menus-container {
       font-size: 14px;
-      padding: 12px 12px 27px;
-
+      padding: 10px 12px 27px;
       box-sizing: border-box;
       user-select: none;
       .sub-menu-group {
@@ -191,6 +198,7 @@
         margin-bottom: 10px;
         border-bottom: 1px solid #ccc;
         color: $subMenuColor;
+        min-height: 100%;
         .sub-menu-group__title {
           height: 40px;
           line-height: 32px;

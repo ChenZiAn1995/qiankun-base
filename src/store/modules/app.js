@@ -5,7 +5,8 @@ import { loadView } from '@/store/modules/permission'
 
 const state = {
   sidebar: {
-    opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
+    // opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
+    opened: true,
     withoutAnimation: false
   },
   device: 'desktop',
@@ -63,18 +64,27 @@ export default {
 
 export const filterMenus = (routers, mergeRouters) => {
   // 遍历后台传来的路由字符串，转换为组件对象
-  const accessedRouters = routers.map((router, index) => {
+  const accessedRouters = []
+  routers.forEach((router, index) => {
     let menus = {
       title: (router.meta && router.meta.title) || '未知',
-      path: mergeRouters ? (mergeRouters += `/${router.path}`) : router.path,
+      path: mergeRouters ? mergeRouters.path + `/${router.path}` : router.path,
       hidden: router.hidden ? router.hidden : false,
       moduleUrl: router.moduleUrl
     }
-    /* 递归处理 */
-    if (router.children && router.children.length) {
-      menus.children = filterMenus(router.children, menus.path)
+    if (router.hidden) {
+      return
     }
-    return menus
+    /* 递归处理 */
+    if (router.children && router.children.length > 0) {
+      menus.children = filterMenus(router.children, menus)
+    }
+    if (menus.title == '商品品牌' || menus.title == '商品属性') {
+      console.log('router: ', router)
+      console.log('menus: ', menus)
+      console.log('mergeRouters: ', mergeRouters)
+    }
+    accessedRouters.push(menus)
   })
   return accessedRouters
 }
