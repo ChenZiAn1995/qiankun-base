@@ -2,8 +2,7 @@
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
-        <span v-if="item.redirect === 'noRedirect' || index == levelList.length - 1" class="no-redirect">{{ item.meta.title }}</span>
-        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
+        <span class="no-redirect">{{ item.meta.title }}</span>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>
@@ -15,7 +14,7 @@
   export default {
     data() {
       return {
-        levelList: null
+        levelList: []
       }
     },
     watch: {
@@ -28,23 +27,27 @@
     },
     methods: {
       getBreadcrumb() {
-        console.log(this.$route)
-        // only show routes with meta.title
-        let matched = this.$route.matched.filter((item) => item.meta && item.meta.title)
-        const first = matched[0]
-
-        if (!this.isDashboard(first)) {
-          matched = [{ path: '/dashboard', meta: { title: 'Dashboard' } }].concat(matched)
+        this.levelList = []
+        let activeMenus = this.$store.getters.routes
+        this.levelList.push(...this.getAllNodes(activeMenus))
+        if (this.levelList.length <= 0) {
+          this.levelList = [{ path: '/client/old/dashboard', title: '首页' }]
         }
-
-        this.levelList = matched.filter((item) => item.meta && item.meta.title && item.meta.breadcrumb !== false)
       },
-      isDashboard(route) {
-        const name = route && route.name
-        if (!name) {
-          return false
+      getAllNodes(nodes) {
+        let nodesGroup = []
+        let node = nodes.find((el) => {
+          console.log('this.$route.path.search(el.path): ', this.$route.path.search(el.path))
+          return this.$route.path.search(el.path) !== -1
+        })
+        console.log(node)
+        if (node) {
+          nodesGroup.push(node)
         }
-        return name.trim().toLocaleLowerCase() === 'Dashboard'.toLocaleLowerCase()
+        if (node.children && node.children.length > 0) {
+          nodesGroup.push(...this.getAllNodes(node.children))
+        }
+        return nodesGroup
       },
       pathCompile(path) {
         // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561

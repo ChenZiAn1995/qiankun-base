@@ -6,7 +6,8 @@ const getters = {
   name: (state) => state.user.name,
   baseinfoset: (state) => state.app.baseinfoset,
   routes: (state) => state.permission.addRouters,
-  activeMenus: (state) => state.app.activeMenus
+  activeMenus: (state) => state.app.activeMenus,
+  menus: (state) => state.app.menus
   // visitedViews: (state) => state.tagsView.visitedViews,
   // cachedViews: (state) => state.tagsView.cachedViews
 }

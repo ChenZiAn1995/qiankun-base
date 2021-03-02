@@ -33,7 +33,7 @@
         <div class="sub-menus-container">
           <template v-for="(subMenu, subMenuIdx) in loadSubMenus.children">
             <div class="sub-menu-group">
-              <template v-if="subMenu.children && subMenu.children.length > 1">
+              <template v-if="subMenu.children && subMenu.children.length > 0">
                 <div :key="subMenuIdx" class="sub-menu-group__title">{{ subMenu.title }}</div>
                 <div class="sub-menus">
                   <template v-for="subMenuItem in subMenu.children">
@@ -106,12 +106,9 @@
         handler(n, o) {
           if (n) {
             let activeMenusIdx = this.menus.findIndex((el) => {
-              if (n.search(el.path) != -1) {
-                console.log('el:  selected: ', el)
-              }
               return n.search(el.path) != -1
             })
-            this.activeMenusIdx = activeMenusIdx >= 0 ? activeMenusIdx : false
+            this.activeMenusIdx = activeMenusIdx >= 0 && activeMenusIdx
             this.activeMenus(this.menus[activeMenusIdx], activeMenusIdx)
           }
         },
@@ -128,10 +125,9 @@
     methods: {
       activeMenus(menu, menuIdx) {
         this.activeSubmenus = menu ? menu : []
-        this.$store.commit('app/SET_ACTIVE_MENUS', menu.children)
+        this.$store.commit('app/SET_ACTIVE_MENUS', menu && menu.children)
       },
       hoverMenu(idx) {
-        console.log('this.menus[idx]: ', this.menus[idx])
         if (this.menus[idx].children && this.menus[idx].children.length > 0) {
           this.hoverMenusIdx = idx
         } else {
@@ -142,7 +138,6 @@
         this.hoverMenusIdx = null
       },
       goToModule(module, moduleIdx) {
-        console.log('module: ', module)
         let path = this.getChildPath(module)
         this.$router.push(path)
       },
