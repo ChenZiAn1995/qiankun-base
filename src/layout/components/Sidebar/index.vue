@@ -127,10 +127,16 @@
     methods: {
       activeMenus(menu, menuIdx) {
         this.activeSubmenus = menu ? menu : []
+        this.$store.commit('app/SET_ACTIVE_MENUS', menu)
         // this.$router.push('/client/old' + menu.children[0].path)
       },
       hoverMenu(idx) {
-        this.hoverMenusIdx = idx
+        console.log('this.menus[idx]: ', this.menus[idx])
+        if (this.menus[idx].children && this.menus[idx].children.length > 0) {
+          this.hoverMenusIdx = idx
+        } else {
+          this.hoverMenusIdx = null
+        }
       },
       focusMenu() {
         this.hoverMenusIdx = null

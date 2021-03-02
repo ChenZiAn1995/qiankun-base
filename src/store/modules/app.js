@@ -11,7 +11,8 @@ const state = {
   },
   device: 'desktop',
   baseinfoset: false,
-  menus: undefined
+  menus: undefined,
+  activeMenus: false
 }
 
 const mutations = {
@@ -28,6 +29,9 @@ const mutations = {
   },
   SET_MENUS: (state, menus) => {
     state.menus = menus
+  },
+  SET_ACTIVE_MENUS: (state, activeMenus) => {
+    state.activeMenus = activeMenus
   }
 }
 
@@ -68,7 +72,7 @@ export const filterMenus = (routers, mergeRouters) => {
   routers.forEach((router, index) => {
     let menus = {
       title: (router.meta && router.meta.title) || '未知',
-      path: mergeRouters ? mergeRouters.path + `/${router.path}` : router.path,
+      path: mergeRouters ? mergeRouters.path + `/${router.path}` : `${router.moduleName ? router.moduleName : '/client/old'}${router.path}`,
       hidden: router.hidden ? router.hidden : false,
       moduleUrl: router.moduleUrl
     }

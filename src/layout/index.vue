@@ -42,7 +42,7 @@
         }
       },
       hasSubSidebar() {
-        return this.$route.name !== 'Dashboard'
+        return !!this.$store.getters.activeMenus
       }
     },
     mounted() {

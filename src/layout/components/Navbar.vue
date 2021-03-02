@@ -5,23 +5,17 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar" />
+          <svg class="user-avatar" aria-hidden="true">
+            <use xlink:href="#icon-guanliyuantouxiang"></use>
+          </svg>
           <i class="el-icon-caret-bottom" />
         </div>
-        <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              Home
-            </el-dropdown-item>
+        <el-dropdown-menu slot="dropdown" class="user-dropdown" style="margin-top: -10px">
+          <router-link to="/client/old/updatepwd/index">
+            <el-dropdown-item>修改密码</el-dropdown-item>
           </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
-          <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
+          <el-dropdown-item divided>
+            <span style="display:block;" @click="logout">退出</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -32,32 +26,48 @@
 <script>
   import { mapGetters } from 'vuex'
   import Breadcrumb from '@/components/Breadcrumb'
-
+  import { MessageBox } from 'element-ui'
   export default {
     components: {
       Breadcrumb
     },
     computed: {
-      ...mapGetters(['sidebar', 'avatar'])
+      ...mapGetters(['sidebar', 'avatar']),
+      unReadNum() {
+        let data = this.$store.state.user.unReadNum
+        return data
+      }
+    },
+    data() {
+      return {
+        logo: this.$store.state.baseinfoset.baseinfoset.adminIndexLogo,
+        letterList: []
+      }
     },
     methods: {
-      async logout() {
-        await this.$store.dispatch('user/logout')
-        this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      logout() {
+        MessageBox.confirm('确定退出系统吗！', '系统提示', {
+          confirmButtonText: '重新登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$store.dispatch('logout').then(() => {
+            location.reload() // 为了重新实例化vue-router对象 避免bug
+          })
+        })
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
-  @import '~@/styles/variables.scss';
   .navbar {
     height: 50px;
     overflow: hidden;
     position: relative;
     background: #fff;
     box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-    min-width: $mainContainerMinWidth;
+
     .hamburger-container {
       line-height: 46px;
       height: 100%;
@@ -72,7 +82,6 @@
     }
 
     .breadcrumb-container {
-      padding-left: 30px;
       float: left;
     }
 
@@ -85,6 +94,15 @@
         outline: none;
       }
 
+      .inform-container {
+        .inform-item {
+          margin-right: 20px;
+          vertical-align: text-bottom;
+          >>> .el-badge__content.is-fixed {
+            top: 8px;
+          }
+        }
+      }
       .right-menu-item {
         display: inline-block;
         padding: 0 8px;

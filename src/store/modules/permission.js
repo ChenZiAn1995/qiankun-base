@@ -36,7 +36,7 @@ export const filterAsyncRouter = (routers, upperRouters) => {
     if (upperRouters) {
       // router.meta.moduleUrl = upperRouters.meta.moduleUrl
     } else {
-      router.path = '/client/old' + router.path
+      // router.path = '/client/old' + router.path
       router.meta.moduleUrl = '/client/old' + router.path
     }
     /* 递归处理 */
