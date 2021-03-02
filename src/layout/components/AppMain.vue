@@ -1,9 +1,8 @@
 <template>
   <section class="base-app-main">
     <transition name="fade-transform" mode="out-in">
-      <div id="appContainer">
-        <router-view :key="key" />
-      </div>
+      <!--   qiankun子应用挂载点   -->
+      <div id="appContainer"></div>
     </transition>
   </section>
 </template>

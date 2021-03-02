@@ -35,11 +35,44 @@ Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
 
-import './qiankun.js'
-
-new Vue({
+let vm = new Vue({
   el: '#baseApp',
   router,
   store,
   render: (h) => h(App)
 })
+
+import { registerMicroApps } from 'qiankun'
+registerMicroApps(
+  [
+    {
+      name: 'wsfFinance', // app name registered
+      entry: '//172.16.3.27:6700',
+      container: '#appContainer',
+      activeRule: '/client/dc',
+      props: {
+        router,
+        store
+      }
+    },
+    {
+      name: 'wsfPlatform', // app name registered
+      entry: '//172.16.3.27:8080',
+      container: '#appContainer',
+      activeRule: '/client/old',
+      props: {
+        router,
+        store
+      }
+    }
+  ],
+  {
+    afterMount: () => {
+      console.log('子应用加载完成')
+      console.log('window.__QIANKUN_SUB_APP_VM__: ', window.__QIANKUN_SUB_APP_VM__)
+      if (window.__QIANKUN_SUB_APP_VM__ && process.env.NODE_ENV === 'development') {
+        vm.$children.push(window.__QIANKUN_SUB_APP_VM__)
+      }
+    }
+  }
+)

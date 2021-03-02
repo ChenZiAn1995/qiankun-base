@@ -56,19 +56,20 @@ export const constantRouterMap = [
       }
     ]
   },
+
+  // qiankun子系统注册路由
   {
     path: '/client/*',
     component: Layout,
-    name: 'datacenter',
     meta: { title: '数据中心', icon: 'dashboard', moduleUrl: '/client/dc' }
   },
-  {
-    path: '/client/old/*',
-    component: Layout,
-    name: 'datacenter',
-    moduleUrl: '/client/old',
-    meta: { title: '旧系统', icon: 'dashboard' }
-  },
+  // {
+  //   path: '/client/old/*',
+  //   component: Layout,
+  //   name: 'datacenter',
+  //   moduleUrl: '/client/old',
+  //   meta: { title: '旧系统', icon: 'dashboard' }
+  // },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
