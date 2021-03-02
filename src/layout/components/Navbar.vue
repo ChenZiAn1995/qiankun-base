@@ -82,6 +82,7 @@
     }
 
     .breadcrumb-container {
+      margin-left: 50px;
       float: left;
     }
 

@@ -13,6 +13,7 @@
               :key="module.path"
               v-if="!module.hidden"
               @mouseenter="hoverMenu(index)"
+              @click="goToModule(module, index)"
             >
               {{ module.title }}
             </div>
@@ -108,10 +109,10 @@
               if (n.search(el.path) != -1) {
                 console.log('el:  selected: ', el)
               }
-              return n.search(el.path) != -1 && el.path.search('/dashboard') == -1
+              return n.search(el.path) != -1
             })
-            this.activeMenusIdx = activeMenusIdx >= 0 && activeMenusIdx
-            this.activeMenus(this.menus[activeMenusIdx])
+            this.activeMenusIdx = activeMenusIdx >= 0 ? activeMenusIdx : false
+            this.activeMenus(this.menus[activeMenusIdx], activeMenusIdx)
           }
         },
         immediate: true
@@ -127,8 +128,7 @@
     methods: {
       activeMenus(menu, menuIdx) {
         this.activeSubmenus = menu ? menu : []
-        this.$store.commit('app/SET_ACTIVE_MENUS', menu)
-        // this.$router.push('/client/old' + menu.children[0].path)
+        this.$store.commit('app/SET_ACTIVE_MENUS', menu.children)
       },
       hoverMenu(idx) {
         console.log('this.menus[idx]: ', this.menus[idx])
@@ -140,6 +140,20 @@
       },
       focusMenu() {
         this.hoverMenusIdx = null
+      },
+      goToModule(module, moduleIdx) {
+        console.log('module: ', module)
+        let path = this.getChildPath(module)
+        this.$router.push(path)
+      },
+      // 获得最终子节点的路径
+      getChildPath(route) {
+        let temp = route.path //暂存路径
+        if (route.children && route.children.length) {
+          route.children = route.children.filter((i) => i.hidden !== true) //过滤掉隐藏的路由
+          return this.getChildPath(route.children[0])
+        }
+        return temp
       }
     }
   }

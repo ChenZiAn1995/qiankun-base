@@ -43,20 +43,6 @@ export const constantRouterMap = [
     hidden: true
   },
 
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        name: 'Dashboard',
-        component: () => import('@/views/dashboard/index'),
-        meta: { title: '系统概览', icon: 'dashboard', moduleUrl: '/dashboard' }
-      }
-    ]
-  },
-
   // qiankun子系统注册路由
   {
     path: '/client/*',
