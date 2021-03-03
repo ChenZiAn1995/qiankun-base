@@ -13,7 +13,7 @@ NProgress.configure({
 }) // NProgress Configuration
 
 // 不需要拦截的路径
-const whiteList = ['/old/login', '/login']
+const whiteList = ['/login']
 
 // 路由拦截器
 router.beforeEach(async (to, from, next) => {
@@ -23,7 +23,6 @@ router.beforeEach(async (to, from, next) => {
   } catch (err) {
     console.log(err)
   }
-
   // 加载中的导航条
   NProgress.start()
 
@@ -35,7 +34,7 @@ router.beforeEach(async (to, from, next) => {
     document.title = store.getters.baseinfoset.siteName
   }
   // 设置标签图片
-  // document.getElementById('page_icon').href = store.getters.menus.labelLog
+  document.getElementById('page_icon').href = store.getters.baseinfoset.labelLog
 
   if (getToken()) {
     // 已登录且要跳转的页面是登录页
@@ -45,8 +44,6 @@ router.beforeEach(async (to, from, next) => {
       })
       NProgress.done()
     } else {
-      //查询待办事项数量, 需求变更已弃用
-      // store.dispatch('getUnReadNum');
       // 判断是否已经拉取用户信息
       if (!store.getters.name) {
         // 判断当前用户是否已拉取完user_info信息
@@ -82,102 +79,12 @@ export const loadMenus = (next, to) => {
   getMenus().then((res) => {
     const asyncRouter = filterAsyncRouter(res)
 
-    // // 判断是否有首页
-    // const index = hasIndex(asyncRouter)
-    // if (index) {
-    //   asyncRouter.shift()
-    //   // 第一个路由前面插入首页的页面
-    //   asyncRouter.unshift({
-    //     path: '/',
-    //     redirect: index.path,
-    //     component: 'Layout',
-    //     moduleUrl: '/dashboard',
-    //     meta: {
-    //       title: '看板'
-    //     },
-    //     children: [
-    //       {
-    //         path: 'dashboard',
-    //         name: 'dashboard',
-    //         component: index.component,
-    //         meta: {
-    //           moduleUrl: '/dashboard',
-    //           title: index.meta.title,
-    //           icon: index.meta.icon,
-    //           affix: true
-    //         }
-    //       }
-    //     ]
-    //   })
-    // } else {
-    //   // 第一个路由前面插入首页的页面
-    //   asyncRouter.unshift({
-    //     path: '/',
-    //     redirect: getChildPath(asyncRouter[0], '')
-    //   })
-    // }
-    // // 404 路由放最后面
-    // asyncRouter.push({
-    //   path: '*',
-    //   redirect: '/404',
-    //   hidden: true
-    // })
-    // asyncRouter.push({
-    //   path: '',
-    //   meta: {
-    //     title: '数据中心'
-    //   },
-    //   moduleUrl: '/client/dc',
-    //   children: [
-    //     {
-    //       path: '',
-    //       meta: {
-    //         title: '数据中心',
-    //         moduleUrl: '/client/dc'
-    //       },
-    //       children: [
-    //         {
-    //           path: '/client/dc',
-    //           meta: {
-    //             title: '数据中心',
-    //             moduleUrl: '/client/dc'
-    //           }
-    //         },
-    //         {
-    //           path: '/client/dc',
-    //           meta: {
-    //             title: '数据中心',
-    //             moduleUrl: '/client/dc'
-    //           }
-    //         }
-    //       ]
-    //     },
-    //     {
-    //       path: '',
-    //       meta: {
-    //         title: '数据中心',
-    //         moduleUrl: '/client/dc'
-    //       },
-    //       children: [
-    //         {
-    //           path: '/client/dc',
-    //           meta: {
-    //             title: '数据中心',
-    //             moduleUrl: '/client/dc'
-    //           }
-    //         }
-    //       ]
-    //     },
-    //     {
-    //       path: '/client/dc',
-    //       meta: {
-    //         title: '数据中心',
-    //         moduleUrl: '/client/dc'
-    //       },
-    //       children: []
-    //     }
-    //   ]
-    // })
+    // 404 路由放最后面
+    asyncRouter.push({
+      path: '*',
+      redirect: '/404',
+      hidden: true
+    })
     store.dispatch('permission/generateRoutes', asyncRouter).then(() => {
       // 存储路由
       // router.addRoutes(asyncRouter) // 动态添加可访问路由表
@@ -190,18 +97,6 @@ export const loadMenus = (next, to) => {
     store.commit('app/SET_MENUS', menus)
     console.log('menus: ', menus)
   })
-}
-
-// 判断是否有首页
-function hasIndex(routes) {
-  if (routes && routes.length > 0) {
-    for (let i = 0; i < routes.length; i++) {
-      if (routes[i].path == '/client/old/dashboard') {
-        return routes[i]
-      }
-    }
-  }
-  return false
 }
 
 // 获得最终子节点的路径

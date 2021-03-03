@@ -23,22 +23,18 @@ const permission = {
 export const filterAsyncRouter = (routers, upperRouters) => {
   // 遍历后台传来的路由字符串，转换为组件对象
   const accessedRouters = routers.filter((router) => {
-    // if (router.component) {
-    //   if (router.component === 'Layout') {
-    //     // Layout组件特殊处理
-    //     router.component = 'Layout'
-    //   } else {
-    //     const component = router.component
-    //     router.component = loadView(component)
-    //   }
+    // if (router.component && !upperRouters && router.component === 'Layout') {
+    //   // Layout组件特殊处理
+    //   router.component = 'Layout'
     // }
-    /* 加入模块值 */
+
+    /* 加入模块参数 */
+    router.moduleName = router.moduleName || '/client/old'
     if (upperRouters) {
-      // router.meta.moduleUrl = upperRouters.meta.moduleUrl
-    } else {
-      // router.path = '/client/old' + router.path
-      router.meta.moduleUrl = '/client/old' + router.path
+      router.moduleName = upperRouters.moduleName
     }
+    router.moduleUrl = router.moduleName + router.path
+
     /* 递归处理 */
     if (router.children && router.children.length) {
       router.children = filterAsyncRouter(router.children, router)

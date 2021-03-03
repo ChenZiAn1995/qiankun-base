@@ -40,7 +40,7 @@
     },
     data() {
       return {
-        logo: this.$store.state.baseinfoset.baseinfoset.adminIndexLogo,
+        // logo: this.$store.state.baseinfoset.baseinfoset.adminIndexLogo,
         letterList: []
       }
     },

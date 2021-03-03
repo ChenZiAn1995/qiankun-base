@@ -31,27 +31,23 @@ import Layout from '@/layout'
  * all roles can be accessed
  */
 export const constantRouterMap = [
+  // 登录页面
   {
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
   },
 
-  {
-    path: '/404',
-    component: () => import('@/views/404'),
-    hidden: true
-  },
-
+  // {
+  //   path: '/',
+  //   redirect: '/client/old/'
+  // },
   // qiankun子系统注册路由
   {
-    path: '/client/*',
+    path: '/client/old/*',
     component: Layout,
-    meta: { title: '数据中心', icon: 'dashboard', moduleUrl: '/client/dc' }
-  },
-
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+    meta: { title: '系统中心', icon: 'dashboard', moduleUrl: '/client/dc' }
+  }
 ]
 
 const createRouter = () =>
