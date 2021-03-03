@@ -37,18 +37,28 @@ export const constantRouterMap = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
-  // {
-  //   path: '/',
-  //   redirect: '/client/old/'
-  // },
   // qiankun子系统注册路由
   {
-    path: '/client/old/*',
+    path: '/',
+    redirect: '/client/old/dashboard',
     component: Layout,
-    meta: { title: '系统中心', icon: 'dashboard', moduleUrl: '/client/dc' }
+    children: [
+      {
+        path: '/client/old/*',
+        component: Layout,
+        meta: { title: '系统中心', icon: 'dashboard', moduleUrl: '/client/dc' }
+      }
+    ]
+  },
+
+  {
+    path: '/404',
+    component: () => import('@/views/404'),
+    hidden: true
   }
 ]
+
+export const baseRouterMap = []
 
 const createRouter = () =>
   new Router({

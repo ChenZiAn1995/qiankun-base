@@ -7,6 +7,7 @@ import { getToken } from '@/utils/token' // get token from cookie
 import { getMenus } from '@/api/user'
 import { filterAsyncRouter } from './store/modules/permission'
 import { filterMenus } from '@/store/modules/app'
+import { baseRouterMap } from './router'
 
 NProgress.configure({
   showSpinner: false
@@ -79,15 +80,29 @@ export const loadMenus = (next, to) => {
   getMenus().then((res) => {
     const asyncRouter = filterAsyncRouter(res)
 
+    // 第一个路由前面插入首页的页面
+    // baseRouterMap.push({
+    //   path: '/',
+    //   redirect: getChildPath(asyncRouter[0], ''),
+    //   component: Layout
+    // })
     // 404 路由放最后面
+    baseRouterMap.push({
+      path: '*',
+      redirect: '/404',
+      hidden: true
+    })
     asyncRouter.push({
       path: '*',
       redirect: '/404',
       hidden: true
     })
+    // 替换首页及默认路由
+
+    console.log('baseRouterMap: ', baseRouterMap)
     store.dispatch('permission/generateRoutes', asyncRouter).then(() => {
       // 存储路由
-      // router.addRoutes(asyncRouter) // 动态添加可访问路由表
+      router.addRoutes(baseRouterMap) // 动态添加可访问路由表
       next({
         ...to,
         replace: true
@@ -111,7 +126,7 @@ function getChildPath(route, path) {
       route.meta.affix = true
       route.path = path + '/' + route.path
     }
-    return path + '/' + temp
+    return path ? route.moduleName + path + '/' + temp : route.moduleName + temp
   }
 }
 

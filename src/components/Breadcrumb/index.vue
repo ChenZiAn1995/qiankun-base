@@ -19,7 +19,7 @@
     },
     watch: {
       $route() {
-        this.getBreadcrumb()
+        // this.getBreadcrumb()
       }
     },
     created() {
@@ -30,6 +30,7 @@
         this.levelList = []
         let activeMenus = this.$store.getters.routes
         this.levelList.push(...this.getAllNodes(activeMenus))
+        console.log('levelList: ', this.levelList)
         if (this.levelList.length <= 0) {
           this.levelList = [{ path: '/client/old/dashboard', title: '首页' }]
         }
