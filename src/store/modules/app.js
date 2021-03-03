@@ -83,11 +83,6 @@ export const filterMenus = (routers, mergeRouters) => {
     if (router.children && router.children.length > 0) {
       menus.children = filterMenus(router.children, menus)
     }
-    if (menus.title == '商品品牌' || menus.title == '商品属性') {
-      console.log('router: ', router)
-      console.log('menus: ', menus)
-      console.log('mergeRouters: ', mergeRouters)
-    }
     accessedRouters.push(menus)
   })
   return accessedRouters

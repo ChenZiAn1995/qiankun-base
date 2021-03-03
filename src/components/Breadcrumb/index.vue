@@ -37,10 +37,8 @@
       getAllNodes(nodes) {
         let nodesGroup = []
         let node = nodes.find((el) => {
-          console.log('this.$route.path.search(el.path): ', this.$route.path.search(el.path))
           return this.$route.path.search(el.path) !== -1
         })
-        console.log(node)
         if (node) {
           nodesGroup.push(node)
         }

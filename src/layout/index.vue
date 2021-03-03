@@ -48,7 +48,10 @@
     mounted() {
       if (!window.qiankunStarted) {
         window.qiankunStarted = true
-        start()
+        // 关闭沙箱模式,兼容IE及部分涉及到操作window的包,如tinyMce,具体见 https://github.com/umijs/qiankun/issues/467
+        start({
+          sandbox: false
+        })
       }
     },
     methods: {
